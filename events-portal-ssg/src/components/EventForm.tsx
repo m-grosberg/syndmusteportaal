@@ -24,6 +24,11 @@ export const EventForm = ({ event, errors, message, submitLabel }: EventFormProp
 
   return (
     <Form method="post" className="event-form" ref={formRef}>
+        {message && (
+            <p className="event/from__message" role="alert">
+                {message}
+            </p>
+        )}
       <div className="event-form__field">
         <label htmlFor="title">Pealkiri</label>
         <input
