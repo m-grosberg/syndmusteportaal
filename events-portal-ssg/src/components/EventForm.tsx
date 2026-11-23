@@ -1,4 +1,4 @@
-import { Form } from "react-router";
+import { Form, useNavigation } from "react-router";
 import { useEffect, useRef } from "react";
 
 import type { EventItem, ValidationErrors } from "../types/event";
@@ -12,6 +12,10 @@ type EventFormProps = {
 
 export const EventForm = ({ event, errors, message, submitLabel }: EventFormProps) => {
     const formRef = useRef<HTMLFormElement>(null);
+    const navigation = useNavigation();
+
+    // Saatmine, ümbersuunamine ja nimekirja uus laadimine: nupp vabaneb alles pärast kõiki kolme.
+    const isSaving = navigation.state !== "idle";
 
     // Vea korral liigub fookus esimesele vigasele väljale.
     useEffect(() => {
@@ -109,7 +113,9 @@ export const EventForm = ({ event, errors, message, submitLabel }: EventFormProp
       </div>
 
 
-      <button type="submit" className="button">{submitLabel}</button>
+      <button type="submit" className="button" disabled={isSaving}>
+        {isSaving ? "Salvestan" : submitLabel}
+      </button>
     </Form>
   );
 };
