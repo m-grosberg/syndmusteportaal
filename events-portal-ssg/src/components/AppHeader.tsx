@@ -24,3 +24,5 @@ export const AppHeader = () => {
     </div>
   );
 };
+
+export const PageHeader = AppHeader;
