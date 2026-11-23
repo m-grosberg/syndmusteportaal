@@ -13,18 +13,26 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 }
 
 export default function NewEvent({ actionData }: Route.ComponentProps) {
-  return (
-    <>
-      <title>Uus sündmus | Haldus</title>
-      <p>
-        <Link to="/admin">Tagasi nimekirja</Link>
+return (
+  <>
+    <title>Uus sündmus | Haldus</title>
+
+    <div className="event-create-page">
+      <p className="event-create-back">
+        <Link className="admin-add-button" to="/admin">
+          Tagasi nimekirja
+        </Link>
       </p>
-      <h2>Uus sündmus</h2>
-      <EventForm
-        errors={actionData?.errors}
-        message={actionData?.message}
-        submitLabel="Lisa sündmus"
-      />
-    </>
-  );
-}
+
+      <h2 className="event-create-title">Uus sündmus</h2>
+
+      <div className="event-create-card">
+        <EventForm
+          errors={actionData?.errors}
+          message={actionData?.message}
+          submitLabel="Lisa sündmus"
+        />
+      </div>
+    </div>
+  </>
+)};
