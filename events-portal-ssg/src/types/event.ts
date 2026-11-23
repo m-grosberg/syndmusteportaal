@@ -9,3 +9,9 @@ export type EventItem = {
   url?: string;
   imageUrl?: string;
 };
+
+// Vorm saadab sündmuse ilma id-ta. Id annab server.
+export type EventDraft = Omit<EventItem, "id">;
+
+// Vead väljade kaupa, nagu API need koodiga 422 tagastab.
+export type ValidationErrors = Partial<Record<keyof EventDraft, string>>;

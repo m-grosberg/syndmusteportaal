@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Footer } from "./Footer";
 import { PageHeader } from "./AppHeader";
 import { Panel } from "./Panel";
-import { ThemeToggle } from "./ThemeToggle";
 import { FilterBar } from "./FilterBar";
 import { EventList } from "./EventList";
 import { EscapeListener } from "./EscapeListener";
@@ -60,7 +59,6 @@ export const EventPortal = ({events}: EventPortalProps) => {
 
       <header className="app__header">
         <PageHeader />
-        <ThemeToggle />
       </header>
 
       <main className="app__main">

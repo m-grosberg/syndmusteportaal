@@ -4,7 +4,8 @@
   "rules": {
     "react/rules-of-hooks": "error",
     "react/only-export-components": ["warn", { "allowConstantExport": true, "allowExportNames": [
-      "loader", "action", "ErrorBoundary", "Layout"] 
+      "loader", "clientLoader", "clientAction", "HydrateFallback", "shouldRevalidate", "ErrorBoundary",
+      "Layout", "action"] 
       }
     ],
   }
