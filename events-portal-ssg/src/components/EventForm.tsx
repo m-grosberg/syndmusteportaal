@@ -1,4 +1,6 @@
 import { Form } from "react-router";
+import { useEffect, useRef } from "react";
+
 import type { EventItem, ValidationErrors } from "../types/event";
 
 type EventFormProps = {
@@ -9,8 +11,15 @@ type EventFormProps = {
 };
 
 export const EventForm = ({ event, errors, message, submitLabel }: EventFormProps) => {
+    const formRef = useRef<HTMLFormElement>(null);
+
+    // Vea korral liigub fookus esimesele vigasele väljale.
+    useEffect(() => {
+        formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
+    }, [errors]);
+
   return (
-    <Form method="post" className="event-form">
+    <Form method="post" className="event-form" ref={formRef}>
       <div className="event-form__field">
         <label htmlFor="title">Pealkiri</label>
         <input
