@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { flushSync } from "react-dom";
 import { Link, useFetcher, type ShouldRevalidateFunctionArgs } from "react-router";
 import type { Route } from "./+types/index";
@@ -65,13 +65,24 @@ const AdminRow = ({ event }: { event: EventItem }) => {
     </li>
   );
 };
+
 export default function AdminIndex({ loaderData }: Route.ComponentProps) {
+  const count = loaderData.events.length;
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const previousCount = useRef(count);
+
+  // Kustutatud rida kadus koos fookusega. Fookus läheb pealkirjale, kus on uus arv.
+  useEffect(() => {
+    if (count < previousCount.current) headingRef.current?.focus();
+    previousCount.current = count;
+  }, [count]);
+
   return (
     <>
-      <title>Haldus | LooduseNautijad</title>
-      <h2>Sündmused</h2>
+      <title>Haldus | Haapsalu kolledž</title>
+      <h2 ref={headingRef} tabIndex={-1}>Sündmused ({count})</h2>
       <Link className="button" to="/admin/uus">Lisa sündmus</Link>
-      <ul>
+      <ul className="admin-list">
         {loaderData.events.map((event) => (
           <AdminRow key={event.id} event={event} />
         ))}
