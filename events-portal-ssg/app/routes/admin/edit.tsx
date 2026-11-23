@@ -37,7 +37,7 @@ export default function EditEvent({ loaderData, actionData }: Route.ComponentPro
     <>
       <title>Muuda sündmust | Haldus</title>
       <p>
-        <Link to="/admin">Tagasi nimekirja</Link>
+        <Link className="admin-add-button" to="/admin">Tagasi nimekirja</Link>
       </p>
       <h2>Muuda sündmust</h2>
       <EventForm
