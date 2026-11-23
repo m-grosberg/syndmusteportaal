@@ -9,7 +9,7 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
 export default function AdminIndex({ loaderData }: Route.ComponentProps) {
   return (
     <>
-      <title>Haldus | Haapsalu kolledž</title>
+      <title>Haldus | LooduseNautijad</title>
       <h2>Sündmused</h2>
       <Link className="button" to="/admin/uus">Lisa sündmus</Link>
       <ul>
