@@ -1,18 +1,32 @@
 import { Form } from "react-router";
-import type { EventItem } from "../types/event";
+import type { EventItem, ValidationErrors } from "../types/event";
 
 type EventFormProps = {
   event?: EventItem;
+  errors?: ValidationErrors;
+  message?: string;
   submitLabel: string;
 };
 
-export const EventForm = ({ event, submitLabel }: EventFormProps) => {
+export const EventForm = ({ event, errors, message, submitLabel }: EventFormProps) => {
   return (
     <Form method="post" className="event-form">
       <div className="event-form__field">
         <label htmlFor="title">Pealkiri</label>
-        <input id="title" name="title" defaultValue={event?.title} />
+        <input
+        id="title"
+        name="title"
+        defaultValue={event?.title}
+        aria-invalid={errors?.title ? true : undefined}
+        aria-describedby={errors?.title ? "title-error" : undefined}
+        />
+        {errors?.title && (
+            <span id="title-error" className="event-form__error">
+                {errors.title}
+            </span>
+        )}
       </div>
+
       <div className="event-form__field">
         <label htmlFor="startsAt">Algus</label>
         <input
@@ -20,7 +34,14 @@ export const EventForm = ({ event, submitLabel }: EventFormProps) => {
           name="startsAt"
           type="datetime-local"
           defaultValue={event?.startsAt.slice(0, 16)}
+          aria-invalid={errors?.title ? true : undefined}
+          aria-describedby={errors?.title ? "title-error" : undefined}
         />
+        {errors?.title && (
+            <span id="title-error" className="event-form__error">
+                {errors.title}
+            </span>
+        )}
       </div>
       
       <div className="event-form__field">
@@ -68,7 +89,14 @@ export const EventForm = ({ event, submitLabel }: EventFormProps) => {
         name="imageUrl"
         type="url"
         defaultValue={event?.imageUrl}
+        aria-invalid={errors?.title ? true : undefined}
+        aria-describedby={errors?.title ? "title-error" : undefined}
         />
+        {errors?.title && (
+            <span id="title-error" className="event-form__error">
+                {errors.title}
+            </span>
+        )}
       </div>
 
 
