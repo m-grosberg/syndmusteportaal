@@ -38,23 +38,23 @@ const AdminRow = ({ event }: { event: EventItem }) => {
   const error = !isDeleting && fetcher.data?.ok === false ? fetcher.data.message : undefined;
 
   return (
-    <li className="admin-list__row">
-      <Link to={`/admin/${event.id}`}>{event.title}</Link>
+    <article className="admin-event-card">
+      <Link className="admin-event-title" to={`/admin/${event.id}`}>{event.title}</Link>
       {isDeleting ? (
         <span role="status">Kustutan…</span>
       ) : isConfirming ? (
-        <fetcher.Form method="post" className="admin-list__confirm">
+        <fetcher.Form method="post" className="admin-event-confirm">
           <input type="hidden" name="id" value={event.id} />
           <span>Kas kustutada?</span>
-          <button type="submit" className="button">Jah, kustuta</button>
-          <button type="button" className="button" onClick={handleCancel} autoFocus>
+          <button type="submit" className="admin-event-delete">Jah, kustuta</button>
+          <button type="button" className="admin-event-delete" onClick={handleCancel} autoFocus>
             Loobu
           </button>
         </fetcher.Form>
       ) : (
         <button
           type="button"
-          className="button"
+          className="admin-event-delete"
           ref={deleteButtonRef}
           onClick={() => setIsConfirming(true)}
         >
@@ -62,7 +62,7 @@ const AdminRow = ({ event }: { event: EventItem }) => {
         </button>
       )}
       {error && <p role="alert">{error}</p>}
-    </li>
+    </article>
   );
 };
 
@@ -79,14 +79,17 @@ export default function AdminIndex({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      <title>Haldus | Haapsalu kolledž</title>
+      <title>Haldus | Loodusenautijad</title>
       <h2 ref={headingRef} tabIndex={-1}>Sündmused ({count})</h2>
-      <Link className="button" to="/admin/uus">Lisa sündmus</Link>
-      <ul className="admin-list">
+      <Link className="admin-add-button" to="/admin/uus">
+        Lisa sündmus
+      </Link>
+      
+      <div className="admin-event-list">
         {loaderData.events.map((event) => (
-          <AdminRow key={event.id} event={event} />
+          <AdminRow event={event} key={event.id} />
         ))}
-      </ul>
+      </div>
     </>
   );
 }
