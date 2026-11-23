@@ -84,3 +84,18 @@ export const createEvent = (draft: EventDraft) => saveEvent("/api/events", "POST
 
 export const updateEvent = (id: number, draft: EventDraft) =>
   saveEvent(`/api/events/${id}`, "PUT", draft);
+
+export type DeleteResult = { ok: true } | { ok: false; message: string };
+
+export const deleteEvent = async (id: number): Promise<DeleteResult> => {
+  let response: Response;
+  try {
+    response = await fetch(`${API_URL}/api/events/${id}`, { method: "DELETE" });
+  } catch {
+    return { ok: false, message: "API-ga ei saanud ühendust. Sündmus on alles, proovi hetke pärast uuesti." };
+  }
+  if (!response.ok) {
+    return { ok: false, message: `Kustutamine ebaõnnestus: API vastas veaga (${response.status}).` };
+  }
+  return { ok: true };
+};
