@@ -1,5 +1,5 @@
 import { Form, useNavigation } from "react-router";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 
 import type { EventItem, ValidationErrors } from "../types/event";
 
@@ -13,6 +13,7 @@ type EventFormProps = {
 export const EventForm = ({ event, errors, message, submitLabel }: EventFormProps) => {
     const formRef = useRef<HTMLFormElement>(null);
     const navigation = useNavigation();
+    const [localErrors, setLocalErrors] = useState<ValidationErrors>({});
 
     // Saatmine, ümbersuunamine ja nimekirja uus laadimine: nupp vabaneb alles pärast kõiki kolme.
     const isSaving = navigation.state !== "idle";
@@ -20,10 +21,32 @@ export const EventForm = ({ event, errors, message, submitLabel }: EventFormProp
     // Vea korral liigub fookus esimesele vigasele väljale.
     useEffect(() => {
         formRef.current?.querySelector<HTMLElement>('[aria-invalid="true"]')?.focus();
-    }, [errors]);
+    }, [errors, localErrors]);
+
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+        const formData = new FormData(event.currentTarget);
+        const nextErrors: ValidationErrors = {};
+
+        if (!String(formData.get("title") ?? "").trim()) {
+            nextErrors.title = "Pealkiri on kohustuslik.";
+        }
+        if (!String(formData.get("startsAt") ?? "").trim()) {
+            nextErrors.startsAt = "Algusaeg on kohustuslik.";
+        }
+        if (!String(formData.get("location") ?? "").trim()) {
+            nextErrors.location = "Asukoht on kohustuslik.";
+        }
+
+        setLocalErrors(nextErrors);
+        if (Object.keys(nextErrors).length > 0) {
+            event.preventDefault();
+        }
+    };
+
+    const fieldErrors = { ...errors, ...localErrors };
 
   return (
-    <Form method="post" className="event-form" ref={formRef}>
+    <Form method="post" className="event-form" ref={formRef} onSubmit={handleSubmit}>
         {message && (
             <p className="event/from__message" role="alert">
                 {message}
@@ -35,12 +58,12 @@ export const EventForm = ({ event, errors, message, submitLabel }: EventFormProp
         id="title"
         name="title"
         defaultValue={event?.title}
-        aria-invalid={errors?.title ? true : undefined}
-        aria-describedby={errors?.title ? "title-error" : undefined}
+        aria-invalid={fieldErrors.title ? true : undefined}
+        aria-describedby={fieldErrors.title ? "title-error" : undefined}
         />
-        {errors?.title && (
+        {fieldErrors.title && (
             <span id="title-error" className="event-form__error">
-                {errors.title}
+                {fieldErrors.title}
             </span>
         )}
       </div>
@@ -51,13 +74,13 @@ export const EventForm = ({ event, errors, message, submitLabel }: EventFormProp
           id="startsAt"
           name="startsAt"
           type="datetime-local"
-          defaultValue={event?.startsAt.slice(0, 16)}
-          aria-invalid={errors?.title ? true : undefined}
-          aria-describedby={errors?.title ? "title-error" : undefined}
+          defaultValue={event?.startsAt?.slice(0, 16)}
+          aria-invalid={fieldErrors.startsAt ? true : undefined}
+          aria-describedby={fieldErrors.startsAt ? "startsAt-error" : undefined}
         />
-        {errors?.title && (
-            <span id="title-error" className="event-form__error">
-                {errors.title}
+        {fieldErrors.startsAt && (
+            <span id="startsAt-error" className="event-form__error">
+                {fieldErrors.startsAt}
             </span>
         )}
       </div>
@@ -68,7 +91,14 @@ export const EventForm = ({ event, errors, message, submitLabel }: EventFormProp
         id="location"
         name="location"
         defaultValue={event?.location}
+        aria-invalid={fieldErrors.location ? true : undefined}
+        aria-describedby={fieldErrors.location ? "location-error" : undefined}
         />
+        {fieldErrors.location && (
+            <span id="location-error" className="event-form__error">
+                {fieldErrors.location}
+            </span>
+        )}
       </div>
 
       <div className="event-form__field">
@@ -107,12 +137,12 @@ export const EventForm = ({ event, errors, message, submitLabel }: EventFormProp
         name="imageUrl"
         type="url"
         defaultValue={event?.imageUrl}
-        aria-invalid={errors?.title ? true : undefined}
-        aria-describedby={errors?.title ? "title-error" : undefined}
+        aria-invalid={fieldErrors.imageUrl ? true : undefined}
+        aria-describedby={fieldErrors.imageUrl ? "imageUrl-error" : undefined}
         />
-        {errors?.title && (
-            <span id="title-error" className="event-form__error">
-                {errors.title}
+        {fieldErrors.imageUrl && (
+            <span id="imageUrl-error" className="event-form__error">
+                {fieldErrors.imageUrl}
             </span>
         )}
       </div>
