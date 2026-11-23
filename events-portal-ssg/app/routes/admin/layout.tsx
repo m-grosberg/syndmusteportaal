@@ -13,15 +13,18 @@ const AdminFrame = ({ children }: { children: ReactNode }) => {
       <meta name="robots" content="noindex, nofollow" />
       <AppHeader />
       <main className="app__main">
-        <h1>Haldus</h1>
-        <p>Sündmuste lisamine, muutmine ja kustutamine.</p>
-        <p className="admin-warning" role="note">
-          Haldusvaatel ei ole autentimist: igaüks, kes aadressi teab, saab kava muuta.
-          Avalik kava uueneb alles pärast uut buildi ja juurutust.
-        </p>
+        <div>
+          <h1>Haldus</h1>
+            <p>Sündmuste lisamine, muutmine ja kustutamine.</p>
+            <p className="admin-warning" role="note">
+              Haldusvaatel ei ole autentimist: igaüks, kes aadressi teab, saab kava muuta.
+              Avalik kava uueneb alles pärast uut buildi ja juurutust.
+            </p>
+        </div>
+
         {children}
       </main>
-      <Footer organization="Tallinna Ülikooli Haapsalu kolledž" />
+      <Footer organization="Loodus Nord OÜ" />
     </div>
   );
 };
